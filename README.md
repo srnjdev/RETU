@@ -9,9 +9,7 @@
 - Generar un PDF de la lista de tareas.
 - Manejar contraseñas en texto plano con `{noop}`, para fines de demostración (facilita la prueba del login).
 
-> **Nota**: Esta aplicación está pensada como **demo** o base de partida. En producción, se recomienda encriptar contraseñas con BCrypt.
 
----
 
 ## 2. Tecnologías Usadas y Versiones
 
@@ -41,6 +39,37 @@
 1. **Clonar** este repositorio (o descargar el código):
 
    ```bash
-   git clone https://github.com/tu-usuario/retu-project.git
-   cd retu-project
+   git clone https://github.com/srnjdev/RETU.git
+   cd RETU
    ```
+
+## 4. Construir y arrancar los contenedores con Docker Compose:
+
+   ```bash
+   docker-compose up --build
+   ```
+
+Esto:
+1. Compilará el proyecto en una imagen Docker (etapa Maven).
+2. Levantará la base de datos PostgreSQL.
+3. Creará e iniciará el contenedor de la aplicación Spring Boot.
+
+## 5. Acceder a la aplicación:
+- Navega a http://localhost:8080/login para el login.
+- Tras iniciar sesión, te redirigirá a /home (dashboard).
+
+### 5.1. Otras Rutas de Interés
+- **Tutores:** http://localhost:8080/tutores
+- **Tareas:** http://localhost:8080/tareas
+
+## 6. Usuario de Prueba (Seeder)
+La base de datos crea automáticamente (la primera vez que se levanta el contenedor) un usuario de prueba a partir de un script SQL. En la tabla tutor, se inserta el siguiente registro:
+
+- **Correo:** admin@ues.edu.sv
+- **Contraseña:** admin
+
+(Almacenada en la base como "{noop}admin" para que Spring Security la reconozca como texto plano.)
+
+Para loguearte en el sistema:
+- **Correo / Usuario:** admin@ues.edu.sv
+- **Contraseña:** admin
