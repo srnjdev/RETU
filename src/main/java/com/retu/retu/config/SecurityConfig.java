@@ -1,16 +1,15 @@
 package com.retu.retu.config;
 
-import com.retu.retu.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.retu.retu.service.CustomUserDetailsService;
 
 @Configuration
 public class SecurityConfig {
@@ -23,7 +22,7 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth -> auth
-            .requestMatchers("/login", "/css/**", "/js/**").permitAll()
+            .requestMatchers("/login", "/css/**", "/js/**", "/imagenes/**").permitAll()
             .anyRequest().authenticated()
         );
 
