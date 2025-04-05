@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    container_name: retu_db
+    environment:
+      - POSTGRES_DB=retudb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      # Volume para persistir datos
+      - db_data:/var/lib/postgresql/data
+      # Montamos la carpeta db-init-scripts como scripts de inicialización
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - retu_net
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: retu_app
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/retudb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+    depends_on:
+      - db
+    networks:
+      - retu_net
+
+volumes:
+  db_data:
+
+networks:
+  retu_net:

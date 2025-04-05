@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - RETU</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+
+    <h1>Bienvenido al Dashboard de RETU</h1>
+    <p>Selecciona la opción que desees:</p>
+
+    <!-- Enlaces rápidos a tutores y tareas -->
+    <div class="mb-4">
+        <a th:href="@{/tutores}" class="btn btn-primary">Ir a Tutores</a>
+        <a th:href="@{/tareas}" class="btn btn-success">Ir a Tareas</a>
+    </div>
+
+    <hr/>
+
+    <!-- Mostrar un resumen de tutores -->
+    <h2>Lista de Tutores</h2>
+    <table class="table table-striped mb-4">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Materia</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="t : ${tutores}">
+            <td th:text="${t.nombre}">Nombre</td>
+            <td th:text="${t.correo}">Correo</td>
+            <td th:text="${t.materia}">Materia</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Mostrar un resumen de tareas -->
+    <h2>Lista de Tareas</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha Entrega</th>
+                <th>Categoría</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr th:each="task : ${tareas}">
+            <td th:text="${task.titulo}">Título</td>
+            <td th:text="${task.descripcion}">Descripción</td>
+            <td th:text="${task.fechaEntrega}">Fecha</td>
+            <td th:text="${task.categoria}">Categoría</td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

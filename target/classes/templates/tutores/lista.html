@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Tutores</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Lista de Tutores</h1>
+
+    <!-- Botón para crear nuevo tutor -->
+    <div class="mb-3">
+        <a th:href="@{/tutores/crear}" class="btn btn-success">Agregar Tutor</a>
+    </div>
+
+    <!-- Tabla de tutores -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Materia</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tutor : ${tutores}">
+                <td th:text="${tutor.nombre}">Nombre</td>
+                <td th:text="${tutor.correo}">Correo</td>
+                <td th:text="${tutor.materia}">Materia</td>
+                <td>
+                    <!-- Botón para editar -->
+                    <a th:href="@{'/tutores/editar/' + ${tutor.id}}" class="btn btn-primary">Editar</a>
+                    <!-- Botón para eliminar -->
+                    <a th:href="@{'/tutores/eliminar/' + ${tutor.id}}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar este tutor?');">
+                       Eliminar
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

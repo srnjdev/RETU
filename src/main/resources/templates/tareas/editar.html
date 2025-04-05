@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Tarea</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Editar Tarea</h1>
+    
+    <form th:action="@{/tareas/actualizar/{id}(id=${tarea.id})}" 
+          th:object="${tarea}"
+          method="post">
+
+        <!-- Título -->
+        <div class="mb-3">
+            <label for="titulo" class="form-label">Título</label>
+            <input type="text" class="form-control" id="titulo" th:field="*{titulo}" required />
+        </div>
+        
+        <!-- Descripción -->
+        <div class="mb-3">
+            <label for="descripcion" class="form-label">Descripción</label>
+            <textarea class="form-control" id="descripcion" th:field="*{descripcion}" rows="3"></textarea>
+        </div>
+        
+        <!-- Fecha de Entrega -->
+        <div class="mb-3">
+            <label for="fechaEntrega" class="form-label">Fecha de Entrega</label>
+            <input type="date" class="form-control" id="fechaEntrega" th:field="*{fechaEntrega}" />
+        </div>
+        
+        <!-- Categoría -->
+        <div class="mb-3">
+            <label for="categoria" class="form-label">Categoría</label>
+            <input type="text" class="form-control" id="categoria" th:field="*{categoria}" />
+        </div>
+        
+        <!-- Botón para guardar cambios -->
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        
+        <!-- Enlace para volver a la lista -->
+        <a th:href="@{/tareas}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>
