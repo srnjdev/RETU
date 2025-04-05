@@ -194,11 +194,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="task : ${tareas}">
-                                <td th:text="${task.titulo}">Título</td>
-                                <td th:text="${task.descripcion}">Descripción</td>
-                                <td th:text="${task.fechaEntrega}">Fecha</td>
-                                <td th:text="${task.categoria}">Categoría</td>
+                            <tr th:each="tarea : ${tareas}">
+                                <td th:text="${tarea.titulo}">Título</td>
+                                <td th:text="${tarea.descripcion}">Descripción</td>
+                                <td th:text="${tarea.fechaEntrega}">Fecha</td>
+                                <td th:text="${tarea.categoria}">Categoría</td>
                                 <td>
                                     <!-- Botón para editar -->
                                     <a th:href="@{'/tareas/editar/' + ${tarea.id}}" class="btn btn-primary">
