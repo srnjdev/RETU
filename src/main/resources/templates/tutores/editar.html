@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Tutor</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Editar Tutor</h1>
+
+    <form th:action="@{/tutores/actualizar/{id}(id=${tutor.id})}"
+          th:object="${tutor}"
+          method="post">
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre</label>
+            <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="correo" class="form-label">Correo</label>
+            <input type="email" class="form-control" th:field="*{correo}" id="correo" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="materia" class="form-label">Materia</label>
+            <input type="text" class="form-control" th:field="*{materia}" id="materia" required/>
+        </div>
+
+        <div class="mb-3">
+            <label for="contrasena" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Actualizar</button>
+        <a th:href="@{/tutores}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login | RETU</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Iniciar Sesión</h1>
+    <form th:action="@{/login}" method="post">
+        <div class="mb-3">
+            <label for="username" class="form-label">Correo / Usuario</label>
+            <input type="text" class="form-control" name="username" id="username" required/>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Contraseña</label>
+            <input type="password" class="form-control" name="password" id="password" required/>
+        </div>
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+    </form>
+
+    <!-- Mensaje de error si param.error está en la URL -->
+    <div th:if="${param.error}">
+        <p style="color:red;">Credenciales inválidas</p>
+    </div>
+</div>
+</body>
+</html>

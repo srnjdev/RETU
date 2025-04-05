@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Tareas</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+</head>
+<body>
+<div class="container mt-4">
+    <h1>Lista de Tareas</h1>
+    
+    <!-- Botón para crear nueva tarea -->
+    <div class="mb-3">
+        <a th:href="@{/tareas/crear}" class="btn btn-success">Crear Tarea</a>
+        <!-- Botón para generar PDF -->
+        <a th:href="@{/tareas/pdf}" class="btn btn-secondary">Generar PDF</a>
+    </div>
+
+    <!-- Tabla de tareas -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Fecha Entrega</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Recorremos la lista de tareas que viene desde el controlador -->
+            <tr th:each="tarea : ${tareas}">
+                <td th:text="${tarea.titulo}">Título</td>
+                <td th:text="${tarea.descripcion}">Descripción</td>
+                <td th:text="${tarea.fechaEntrega}">Fecha</td>
+                <td th:text="${tarea.categoria}">Categoría</td>
+                <td>
+                    <!-- Botón para editar -->
+                    <a th:href="@{'/tareas/editar/' + ${tarea.id}}" class="btn btn-primary">
+                        Editar
+                    </a>
+                    <!-- Botón para eliminar -->
+                    <a th:href="@{'/tareas/eliminar/' + ${tarea.id}}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar esta tarea?');">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <a th:href="@{/home}" class="btn btn-secondary">Volver</a>
+</div>
+</body>
+</html>
