@@ -46,7 +46,7 @@
 ## 4. Construir y arrancar los contenedores con Docker Compose:
 
    ```bash
-   docker-compose up --build
+   docker compose up --build
    ```
 
 Esto:
