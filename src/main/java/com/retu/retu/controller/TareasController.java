@@ -4,6 +4,10 @@ import com.retu.retu.entity.Tarea;
 import com.retu.retu.repository.TareaRepository;
 import com.retu.retu.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -62,10 +66,19 @@ public class TareasController {
         return "redirect:/tareas";
     }
 
-    @GetMapping("/pdf")
-    public String generarPdf() {
-        List<Tarea> tareas = tareaRepository.findAll();
-        byte[] pdfBytes = pdfService.generarPdfConTareas(tareas);
-        return "redirect:/tareas";
+  @GetMapping("/pdf")
+   public ResponseEntity<byte[]> generarPdf() {
+    List<Tarea> tareas = tareaRepository.findAll();
+    byte[] pdfBytes = pdfService.generarPdfConTareas(tareas);
+
+    if (pdfBytes == null) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
     }
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.setContentDispositionFormData("inline", "tareas.pdf");
+
+    return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+  }
 }

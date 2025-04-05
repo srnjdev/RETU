@@ -24,19 +24,20 @@ public class PdfService {
             Paragraph titulo = new Paragraph("Lista de Tareas", fontTitulo);
             titulo.setAlignment(Element.ALIGN_CENTER);
             document.add(titulo);
-
+            
             document.add(new Paragraph(" ")); // Espacio
 
-            // Listado de tareas
-            for (Tarea tarea : tareas) {
-                // Ejemplo de texto
-                Paragraph p = new Paragraph("• " + tarea.getTitulo() 
-                    + " (Fecha Entrega: " + tarea.getFechaEntrega() + ")");
+            // Listar cada tarea
+            for (Tarea t : tareas) {
+                Paragraph p = new Paragraph("• " + t.getTitulo() 
+                    + " (Entrega: " + t.getFechaEntrega() + ") "
+                    + "Categoría: " + t.getCategoria());
                 document.add(p);
             }
 
             document.close();
             return out.toByteArray();
+
         } catch (Exception e) {
             e.printStackTrace();
             return null;
