@@ -215,5 +215,36 @@
             </main>
         </div>
     </div>
+
+    <!-- Tabla de tutores -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Materia</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="tutor : ${tutores}">
+                <td th:text="${tutor.nombre}">Nombre</td>
+                <td th:text="${tutor.correo}">Correo</td>
+                <td th:text="${tutor.materia}">Materia</td>
+                <td>
+                    <!-- Botón para editar -->
+                    <a th:href="@{'/tutores/editar/' + ${tutor.id}}" class="btn btn-primary">Editar</a>
+                    <!-- Botón para eliminar -->
+                    <a th:href="@{'/tutores/eliminar/' + ${tutor.id}}"
+                       class="btn btn-danger"
+                       onclick="return confirm('¿Está seguro de eliminar este tutor?');">
+                       Eliminar
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/home}" class="btn btn-secondary">Volver</a>
+</div>
 </body>
 </html>
