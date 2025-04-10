@@ -30,13 +30,19 @@ public class TutoresController {
     }
 
     @PostMapping
-    public String guardarTutor(@ModelAttribute Tutor tutor) {
-        String passIngresada = tutor.getContrasena(); 
+    public String guardarTutor(@ModelAttribute Tutor tutor, Model model) {
+        if (!tutor.getCorreo().toLowerCase().endsWith("@ues.edu.sv")) {
+            model.addAttribute("errorCorreo", "El correo debe pertenecer al dominio @ues.edu.sv");
+            model.addAttribute("tutor", tutor); // para que no se borre lo que el usuario ya escribió
+            return "tutores/crear";
+        }
+    
+        String passIngresada = tutor.getContrasena();
         tutor.setContrasena("{noop}" + passIngresada);
         tutorRepository.save(tutor);
         return "redirect:/tutores";
     }
-
+    
     @GetMapping("/editar/{id}")
     public String editarTutor(@PathVariable("id") Long id, Model model) {
         Tutor tutor = tutorRepository.findById(id)
@@ -46,14 +52,19 @@ public class TutoresController {
     }
 
     @PostMapping("/actualizar/{id}")
-    public String actualizarTutor(@PathVariable("id") Long id, @ModelAttribute Tutor tutor) {
+    public String actualizarTutor(@PathVariable("id") Long id, @ModelAttribute Tutor tutor, Model model) {
+        if (!tutor.getCorreo().toLowerCase().endsWith("@ues.edu.sv")) {
+            model.addAttribute("errorCorreo", "El correo debe pertenecer al dominio @ues.edu.sv");
+            model.addAttribute("tutor", tutor);
+            return "tutores/editar";
+        }
+    
         tutor.setId(id);
-
-        String passIngresada = tutor.getContrasena(); 
+        String passIngresada = tutor.getContrasena();
         tutor.setContrasena("{noop}" + passIngresada);
         tutorRepository.save(tutor);
         return "redirect:/tutores";
-    }
+    }    
 
     @GetMapping("/eliminar/{id}")
     public String eliminarTutor(@PathVariable("id") Long id) {

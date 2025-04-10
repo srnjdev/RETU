@@ -8,6 +8,11 @@
 <div class="container mt-4">
     <h1>Crear Nuevo Tutor</h1>
 
+    <!-- Mensaje de error -->
+    <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
+        <p th:text="${errorCorreo}"></p>
+    </div>
+
     <form th:action="@{/tutores}" th:object="${tutor}" method="post">
         <!-- Nombre -->
         <div class="mb-3">
