@@ -32,6 +32,14 @@ public class SecurityConfig {
             .permitAll()
         );
 
+        // ========================
+        // 🔽 AGREGADO PARA AUTH0
+        // ========================
+        http.oauth2Login(oauth2 -> oauth2
+            .loginPage("/login")
+            .defaultSuccessUrl("/home", true)
+        );
+
         http.logout(logout -> logout
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
@@ -41,7 +49,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-   
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder =
@@ -54,3 +61,4 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 }
+

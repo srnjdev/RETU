@@ -1,101 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
-    <!-- Mantener la referencia al padre de Spring Boot -->
+
+    <!-- Inherit Spring Boot base settings -->
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.3.10</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath/>
     </parent>
-    
-    <!-- Información del proyecto -->
+
+    <!-- Información básica del proyecto -->
     <groupId>com.retu</groupId>
     <artifactId>retu</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>RETU</name>
     <description>Proyecto Spring Boot Dockerizado con PostgreSQL</description>
-    
+
     <properties>
         <java.version>17</java.version>
     </properties>
-    
+
     <dependencies>
-        <!-- Spring Boot Web -->
+        <!-- 📦 Framework Web (Controllers REST, MVC, etc.) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        
-        <!-- Spring Boot Data JPA -->
+
+        <!-- 🗃️ JPA + Hibernate -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        
-        <!-- Spring Boot Thymeleaf -->
+
+        <!-- 🖼️ Motor de plantillas Thymeleaf -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        
-        <!-- PostgreSQL Driver -->
+
+        <!-- 🐘 Conector JDBC para PostgreSQL -->
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-        
-        <!-- DevTools (opcional para reinicios rápidos en desarrollo) -->
+
+        <!-- 🔁 DevTools para recarga en caliente durante el desarrollo -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        
-        <!-- Spring Boot Starter Test -->
+
+        <!-- 🧪 Dependencias para pruebas unitarias -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
-        <!-- NUEVAS DEPENDENCIAS SUGERIDAS -->
-        
-        <!-- Spring Security (para autenticación/seguridad) -->
+
+        <!-- 🔐 Spring Security (autenticación y autorización básica) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        
-        <!-- iText para generación de PDF -->
+
+        <!-- 🔐 OAuth2 Login (Google, Auth0, GitHub, etc.) -->
+        <!-- ✅ NECESARIA PARA LOGIN CON GOOGLE O AUTH0 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-oauth2-client</artifactId>
+        </dependency>
+
+        <!-- 🧾 Validaciones con anotaciones (e.g. @NotBlank, @Email) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!-- 📄 Generación de PDF con iText -->
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
             <version>5.5.13.3</version>
         </dependency>
-        
-        <!-- Spring Boot Validation (Bean Validation) -->
+
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-validation</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-test</artifactId>
+            <scope>test</scope>
         </dependency>
-        
+
+
     </dependencies>
-    
+
     <build>
         <plugins>
-            <!-- Plugin de Spring Boot para empaquetar la aplicación -->
+            <!-- ⚙️ Plugin para empaquetar aplicación Spring Boot -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
     </build>
-    
 </project>
+
