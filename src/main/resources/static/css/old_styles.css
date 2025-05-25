@@ -1,0 +1,69 @@
+ /* Estilos personalizados que no tienen un equivalente directo en Bootstrap */
+    .login-container {
+      border-radius: 0.5rem;
+      /* Equivalente a border-radius: 8px */
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 350px;
+      /* Mantiene el ancho */
+      animation: neon-border 5s linear infinite;
+      /* Mantiene la animación */
+    }
+
+    @keyframes neon-border {
+      0% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      }
+
+      20% {
+        box-shadow: 0 0 10px rgba(255, 165, 0, 0.8);
+      }
+
+      40% {
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.8);
+      }
+
+      60% {
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+      }
+
+      80% {
+        box-shadow: 0 0 10px rgba(0, 0, 255, 0.8);
+      }
+
+      100% {
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+      }
+    }
+
+    .logo {
+      width: 80px;
+      margin-right: 1rem;
+    }
+
+    .forgot-password-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .forgot-password {
+      color: #6c757d;
+      /* Color de texto secundario de Bootstrap */
+      text-decoration: none;
+      padding: 0 0.5rem;
+      font-size: 0.875rem;
+      /* Tamaño de fuente pequeño de Bootstrap */
+      white-space: nowrap;
+    }
+
+    .key-image {
+      width: 15px;
+      height: auto;
+      margin: 0 0.2rem;
+    }
+
+    .line {
+      border-top: 1px solid #ccc;
+      width: 30%;
+    }
