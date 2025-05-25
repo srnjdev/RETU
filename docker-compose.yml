@@ -1,39 +1,75 @@
 version: '3.8'
 
 services:
+# -------------------------------------------------
+# ⬇️  PostgreSQL
+# -------------------------------------------------
   db:
     image: postgres:14
     container_name: retu_db
+
+    # Carga las variables desde .env
+    env_file:
+      - .env
+
+    # Toma las credenciales desde el .env
     environment:
-      - POSTGRES_DB=retudb
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB:      ${POSTGRES_DB}
+      POSTGRES_USER:    ${SPRING_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+
     ports:
       - "5432:5432"
+
     volumes:
-      # Volume para persistir datos
-      - db_data:/var/lib/postgresql/data
-      # Montamos la carpeta db-init-scripts como scripts de inicialización
-      - ./db-init-scripts:/docker-entrypoint-initdb.d
+      - db_data:/var/lib/postgresql/data          # Datos persistentes
+      - ./db-init-scripts:/docker-entrypoint-initdb.d   # Seeder SQL
+
     networks:
       - retu_net
 
+# -------------------------------------------------
+# ⬇️  Aplicación Spring Boot
+# -------------------------------------------------
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: retu_app
+
+    # Carga todas las claves / tokens desde .env
+    env_file:
+      - .env
+
+    # Solo enumeramos los nombres: Docker tomará los valores del .env
+    environment:
+      - SPRING_DATASOURCE_URL
+      - SPRING_DATASOURCE_USERNAME
+      - SPRING_DATASOURCE_PASSWORD
+
+      # Auth0
+      - AUTH0_CLIENT_ID
+      - AUTH0_CLIENT_SECRET
+      - AUTH0_SCOPE
+      - AUTH0_REDIRECT_URI
+      - AUTH0_CLIENT_NAME
+      - AUTH0_GRANT_TYPE
+      - AUTH0_AUTH_URI
+      - AUTH0_TOKEN_URI
+      - AUTH0_USERINFO_URI
+      - AUTH0_USER_ATTRIBUTE
+
     ports:
       - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/retudb
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=postgres
+
     depends_on:
       - db
     networks:
       - retu_net
 
+# -------------------------------------------------
+# ⬇️  Volúmenes & Redes
+# -------------------------------------------------
 volumes:
   db_data:
 
