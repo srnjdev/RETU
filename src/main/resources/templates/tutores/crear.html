@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Crear Tutor | RETU</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <title>Crear Tarea</title>
+        <link rel="stylesheet" th:href="@{/css/form_crear.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<div class="container mt-4">
-    <h1>Crear Nuevo Tutor</h1>
 
-    <!-- Mensaje de error -->
+<div class="container">
+    <h1>Crear Nueva Tutor</h1>
+        <!-- Mensaje de error -->
     <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
         <p th:text="${errorCorreo}"></p>
     </div>
@@ -38,9 +39,18 @@
             <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required/>
         </div>
 
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/tutores}" class="btn btn-secondary">Cancelar</a>
+                    <!-- Botones -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+            
+            <a th:href="@{/tareas}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
     </form>
 </div>
 </body>
 </html>
+
