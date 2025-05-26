@@ -1,15 +1,22 @@
 package com.retu.retu.config;
 
+import com.retu.retu.repository.TutorRepository;
+import com.retu.retu.service.CustomOAuth2UserService;
+import com.retu.retu.service.CustomUserDetailsService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.retu.retu.service.CustomUserDetailsService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Configuration
 public class SecurityConfig {
@@ -17,14 +24,24 @@ public class SecurityConfig {
     @Autowired
     private CustomUserDetailsService userDetailsService;
 
+    // Necesario para crear el CustomOAuth2UserService
+    @Autowired
+    private TutorRepository tutorRepository;
+
+    // Definir el bean para el servicio OAuth2 personalizado
+    @Bean
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> customOAuth2UserService() {
+        return new CustomOAuth2UserService(tutorRepository);
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable());
 
         http.authorizeHttpRequests(auth -> auth
             .requestMatchers("/login", "/css/**", "/js/**", "/imagenes/**").permitAll()
-            .requestMatchers("/tutores/**").hasRole("ADMIN")   // Solo ADMIN puede acceder a tutores
-            .requestMatchers("/tareas/**").hasAnyRole("ADMIN", "USUARIO") // Ambos roles pueden acceder a tareas
+            .requestMatchers("/tutores/**").hasRole("ADMIN")
+            .requestMatchers("/tareas/**").hasAnyRole("ADMIN", "USUARIO")
             .anyRequest().authenticated()
         );
 
@@ -34,9 +51,12 @@ public class SecurityConfig {
             .permitAll()
         );
 
-        // Configuración OAuth2
+        // Agregamos userService para manejar el registro automático
         http.oauth2Login(oauth2 -> oauth2
             .loginPage("/login")
+            .userInfoEndpoint(userInfo -> userInfo
+                .userService(customOAuth2UserService())
+            )
             .defaultSuccessUrl("/home", true)
         );
 
@@ -46,7 +66,6 @@ public class SecurityConfig {
             .permitAll()
         );
 
-        // 👇 Redirige en caso de acceso denegado (403)
         http.exceptionHandling(exception -> exception
             .accessDeniedHandler((request, response, accessDeniedException) -> {
                 response.sendRedirect("/home?denegado");
@@ -68,5 +87,3 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 }
-
-
