@@ -17,6 +17,7 @@
         <span></span>
         <span></span>
     </div>
+
     <!-- Sidebar Menu   -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -41,39 +42,18 @@
                         <img src="/imagenes/perfil.png" alt="Foto del Tutor" class="foto-tutor">
                         <span class="nombre-usuario" id="nombre-tutor">Nombre Tutor</span>
                     </div>
-                    <button class="boton-salir">
+
+                    <!-- 🔒 Formulario de cierre de sesión -->
+                    <form th:action="@{/logout}" method="post" id="logoutForm" style="display: none;"></form>
+
+                    <button class="boton-salir" onclick="document.getElementById('logoutForm').submit();">
                         <img src="/imagenes/cerrar-sesion.png" alt="Cerrar sesión" class="icono-salir">
                     </button>
                 </div>
             </div>
         </header>
 
-
         <div class="container">
-            <!-- Sección de Tutores -->
-            <div class="section-title">
-                <h2>Lista de Tutores</h2>
-            </div>
-
-            <div class="table-container">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Materia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="t, stat : ${tutores}">
-                            <td th:text="${t.nombre}">nombre</td>
-                            <td th:text="${t.correo}">correo</td>
-                            <td th:text="${t.materia}"> materia</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
             <!-- Sección de Tareas -->
             <div class="section-title" style="margin-top: 40px;">
                 <h2>Lista de Tareas</h2>
@@ -94,7 +74,7 @@
                             <td th:text="${task.titulo}">titulo</td>
                             <td th:text="${task.descripcion}">descripcion</td>
                             <td th:text="${task.fechaEntrega}">fecha</td>
-                            <td th:text="${task.categoria}">Categoria</td>
+                            <td th:text="${task.categoria}">categoria</td>
                         </tr>
                     </tbody>
                 </table>
