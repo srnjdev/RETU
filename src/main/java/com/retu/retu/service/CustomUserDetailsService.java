@@ -1,13 +1,17 @@
 package com.retu.retu.service;
 
-import com.retu.retu.entity.Tutor;
-import com.retu.retu.repository.TutorRepository;
+import java.util.Collections;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import com.retu.retu.entity.Tutor;
+import com.retu.retu.repository.TutorRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -22,16 +26,21 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Usuario no encontrado: " + username);
         }
 
-        // Contraseña en texto plano, tal cual está en BD
         String password = tutor.getContrasena();
 
-        // Rol genérico "ROLE_USER"
-        SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_USER");
+        String nombreRol = tutor.getRol() != null ? tutor.getRol().getNombre() : "";
+
+        // Convertimos "Administrador" → "ROLE_ADMIN", "Usuario" → "ROLE_USUARIO"
+        String springRole = switch (nombreRol.toUpperCase()) {
+            case "ADMINISTRADOR" -> "ROLE_ADMIN";
+            case "USUARIO" -> "ROLE_USUARIO";
+            default -> throw new IllegalStateException("Rol desconocido: " + nombreRol);
+        };
 
         return new User(
-                tutor.getCorreo(),   // "username"
-                password,            // "password" (texto plano)
-                Collections.singletonList(authority)
+                tutor.getCorreo(),
+                password,
+                Collections.singletonList(new SimpleGrantedAuthority(springRole))
         );
     }
 }
