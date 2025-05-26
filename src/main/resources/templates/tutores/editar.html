@@ -37,6 +37,20 @@
             <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required />
         </div>
 
+                <!-- Rol -->
+        <div class="mb-3">
+            <label for="rol" class="form-label">Rol</label>
+            <select class="form-select" th:field="*{rol.id}" id="rol" required>
+                <option value="" disabled>Seleccione un rol</option>
+                <th:block th:each="rol : ${roles}">
+                    <option th:value="${rol.id}"
+                            th:text="${rol.nombre}"
+                            th:selected="${tutor.rol != null and tutor.rol.id == rol.id}">
+                    </option>
+                </th:block>
+            </select>
+        </div>
+        
         <button type="submit" class="btn btn-primary">Actualizar</button>
         <a th:href="@{/tutores}" class="btn btn-secondary">Cancelar</a>
     </form>

@@ -17,6 +17,7 @@
         <span></span>
         <span></span>
     </div>
+
     <!-- Sidebar Menu   -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -41,13 +42,16 @@
                         <img src="/imagenes/perfil.png" alt="Foto del Tutor" class="foto-tutor">
                         <span class="nombre-usuario" id="nombre-tutor">Nombre Tutor</span>
                     </div>
-                    <button class="boton-salir">
+
+                    <!-- 🔒 Formulario de cierre de sesión -->
+                    <form th:action="@{/logout}" method="post" id="logoutForm" style="display: none;"></form>
+
+                    <button class="boton-salir" onclick="document.getElementById('logoutForm').submit();">
                         <img src="/imagenes/cerrar-sesion.png" alt="Cerrar sesión" class="icono-salir">
                     </button>
                 </div>
             </div>
         </header>
-
 
         <div class="container">
             <!-- Sección de Tutores -->
@@ -68,7 +72,7 @@
                         <tr th:each="t, stat : ${tutores}">
                             <td th:text="${t.nombre}">nombre</td>
                             <td th:text="${t.correo}">correo</td>
-                            <td th:text="${t.materia}"> materia</td>
+                            <td th:text="${t.materia}">materia</td>
                         </tr>
                     </tbody>
                 </table>
@@ -94,7 +98,7 @@
                             <td th:text="${task.titulo}">titulo</td>
                             <td th:text="${task.descripcion}">descripcion</td>
                             <td th:text="${task.fechaEntrega}">fecha</td>
-                            <td th:text="${task.categoria}">Categoria</td>
+                            <td th:text="${task.categoria}">categoria</td>
                         </tr>
                     </tbody>
                 </table>

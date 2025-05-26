@@ -1,7 +1,15 @@
 package com.retu.retu.entity;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tutor")
@@ -23,14 +31,19 @@ public class Tutor implements Serializable {
     @Column(name = "contrasena", nullable = false)
     private String contrasena;
 
+    @ManyToOne
+    @JoinColumn(name = "rol_id", nullable = false)
+    private Rol rol;
+
     public Tutor() {
     }
 
-    public Tutor(String nombre, String correo, String materia, String contrasena) {
+    public Tutor(String nombre, String correo, String materia, String contrasena, Rol rol) {
         this.nombre = nombre;
         this.correo = correo;
         this.materia = materia;
         this.contrasena = contrasena;
+        this.rol = rol;
     }
 
     public Long getId() {
@@ -67,4 +80,12 @@ public class Tutor implements Serializable {
     public void setContrasena(String contrasena) {
         this.contrasena = contrasena;
     }
+
+    public Rol getRol() {
+        return rol;
+    }
+    public void setRol(Rol rol) {
+        this.rol = rol;
+    }
 }
+

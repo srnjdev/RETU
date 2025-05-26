@@ -10,11 +10,11 @@ COPY mvnw pom.xml ./
 RUN chmod +x mvnw
 
 # Descargar dependencias offline
-RUN ./mvnw dependency:go-offline
+RUN mvn dependency:go-offline
 
 # Copiamos el código fuente y compilamos el proyecto
 COPY src/ src/
-RUN ./mvnw clean package -DskipTests
+RUN mvn clean package -DskipTests
 
 # -------------------------------------------
 # Etapa 2: Imagen de Ejecución (Runtime)

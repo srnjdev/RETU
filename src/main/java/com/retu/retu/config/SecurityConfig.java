@@ -23,6 +23,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(auth -> auth
             .requestMatchers("/login", "/css/**", "/js/**", "/imagenes/**").permitAll()
+            .requestMatchers("/tutores/**").hasRole("ADMIN")   // Solo ADMIN puede acceder a tutores
+            .requestMatchers("/tareas/**").hasAnyRole("ADMIN", "USUARIO") // Ambos roles pueden acceder a tareas
             .anyRequest().authenticated()
         );
 
@@ -32,9 +34,7 @@ public class SecurityConfig {
             .permitAll()
         );
 
-        // ========================
-        // 🔽 AGREGADO PARA AUTH0
-        // ========================
+        // Configuración OAuth2
         http.oauth2Login(oauth2 -> oauth2
             .loginPage("/login")
             .defaultSuccessUrl("/home", true)
@@ -44,6 +44,13 @@ public class SecurityConfig {
             .logoutUrl("/logout")
             .logoutSuccessUrl("/login?logout")
             .permitAll()
+        );
+
+        // 👇 Redirige en caso de acceso denegado (403)
+        http.exceptionHandling(exception -> exception
+            .accessDeniedHandler((request, response, accessDeniedException) -> {
+                response.sendRedirect("/home?denegado");
+            })
         );
 
         return http.build();
@@ -61,4 +68,5 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 }
+
 
