@@ -1,46 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Crear Tutor | RETU</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <title>Crear Tarea</title>
+    <link rel="stylesheet" th:href="@{/css/form_crear.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-<div class="container mt-4">
-    <h1>Crear Nuevo Tutor</h1>
 
-    <!-- Mensaje de error -->
-    <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
-        <p th:text="${errorCorreo}"></p>
+    <div class="container">
+        <h1>Crear Nuevo Tutor</h1>
+        <!-- Mensaje de error -->
+        <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
+            <p th:text="${errorCorreo}"></p>
+        </div>
+
+        <form th:action="@{/tutores}" th:object="${tutor}" method="post">
+            <!-- Nombre -->
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required />
+            </div>
+
+            <!-- Correo -->
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" th:field="*{correo}" id="correo" required />
+            </div>
+
+            <!-- Materia -->
+            <div class="mb-3">
+                <label for="materia" class="form-label">Materia</label>
+                <input type="text" class="form-control" th:field="*{materia}" id="materia" required />
+            </div>
+
+            <!-- Contraseña (texto plano) -->
+            <div class="mb-3">
+                <label for="contrasena" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required />
+            </div>
+
+
+            <!-- Rol -->
+            <div class="mb-3">
+                <label for="rol" class="form-label">Rol</label>
+                <select class="form-control" th:field="*{rol.id}" id="rol" required>
+                    <option value="" disabled selected>Seleccione un rol</option>
+                    <th:block th:each="rol : ${roles}">
+                        <option th:value="${rol.id}" th:text="${rol.nombre}"></option>
+                    </th:block>
+                </select>
+            </div>
+            <!-- Botones -->
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+
+                <a th:href="@{/tareas}" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Volver
+                </a>
+            </div>
+        </form>
     </div>
-
-    <form th:action="@{/tutores}" th:object="${tutor}" method="post">
-        <!-- Nombre -->
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required/>
-        </div>
-
-        <!-- Correo -->
-        <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" class="form-control" th:field="*{correo}" id="correo" required/>
-        </div>
-
-        <!-- Materia -->
-        <div class="mb-3">
-            <label for="materia" class="form-label">Materia</label>
-            <input type="text" class="form-control" th:field="*{materia}" id="materia" required/>
-        </div>
-
-        <!-- Contraseña (texto plano) -->
-        <div class="mb-3">
-            <label for="contrasena" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required/>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        <a th:href="@{/tutores}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
 </body>
+
 </html>

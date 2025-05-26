@@ -1,45 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title>Editar Tutor</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <title>Editar Tarea</title>
+    <link rel="stylesheet" th:href="@{/css/form_editar.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body>
-<div class="container mt-4">
-    <h1>Editar Tutor</h1>
+    <div class="container">
+        <h1>Editar Tutor</h1>
 
-    <!-- Mensaje de error -->
-    <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
-        <p th:text="${errorCorreo}"></p>
+        <!-- Mensaje de error -->
+        <div th:if="${errorCorreo}" class="alert alert-danger" role="alert">
+            <p th:text="${errorCorreo}"></p>
+        </div>
+
+        <form th:action="@{/tutores/actualizar/{id}(id=${tutor.id})}" th:object="${tutor}" method="post">
+
+            <div class="mb-3">
+                <label for="nombre" class="form-label">Nombre</label>
+                <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="correo" class="form-label">Correo</label>
+                <input type="email" class="form-control" th:field="*{correo}" id="correo" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="materia" class="form-label">Materia</label>
+                <input type="text" class="form-control" th:field="*{materia}" id="materia" required />
+            </div>
+
+            <div class="mb-3">
+                <label for="contrasena" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required />
+            </div>
+
+            <!-- Rol -->
+            <div class="mb-3">
+                <label for="rol" class="form-label">Rol</label>
+                <select class="form-control" th:field="*{rol.id}" id="rol" required>
+                    <option value="" disabled>Seleccione un rol</option>
+                    <th:block th:each="rol : ${roles}">
+                        <option th:value="${rol.id}" th:text="${rol.nombre}"
+                            th:selected="${tutor.rol != null and tutor.rol.id == rol.id}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+
+
+        <!-- Botones -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-warning">
+                <i class="fas fa-sync-alt"></i> Actualizar
+            </button>
+            
+            <a th:href="@{/tareas}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
+        </form>
     </div>
-
-    <form th:action="@{/tutores/actualizar/{id}(id=${tutor.id})}"
-          th:object="${tutor}"
-          method="post">
-
-        <div class="mb-3">
-            <label for="nombre" class="form-label">Nombre</label>
-            <input type="text" class="form-control" th:field="*{nombre}" id="nombre" required/>
-        </div>
-
-        <div class="mb-3">
-            <label for="correo" class="form-label">Correo</label>
-            <input type="email" class="form-control" th:field="*{correo}" id="correo" required/>
-        </div>
-
-        <div class="mb-3">
-            <label for="materia" class="form-label">Materia</label>
-            <input type="text" class="form-control" th:field="*{materia}" id="materia" required/>
-        </div>
-
-        <div class="mb-3">
-            <label for="contrasena" class="form-label">Contraseña</label>
-            <input type="password" class="form-control" th:field="*{contrasena}" id="contrasena" required />
-        </div>
-
-        <button type="submit" class="btn btn-primary">Actualizar</button>
-        <a th:href="@{/tutores}" class="btn btn-secondary">Cancelar</a>
-    </form>
-</div>
 </body>
+
 </html>
