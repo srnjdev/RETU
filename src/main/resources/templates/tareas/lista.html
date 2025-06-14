@@ -83,6 +83,7 @@
                                             <th>Descripción</th>
                                             <th>Fecha de Entrega</th>
                                             <th>Categoría</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -92,6 +93,7 @@
                                             <td th:text="${tarea.descripcion}">Descripción</td>
                                             <td th:text="${tarea.fechaEntrega}">Fecha</td>
                                             <td th:text="${tarea.categoria}">Categoría</td>
+                                            <td th:text="${tarea.estado}">Estado</td>
                                             <td>
                                                 <div class="action-buttons">
                                                     <a th:href="@{'/tareas/editar/' + ${tarea.id}}">

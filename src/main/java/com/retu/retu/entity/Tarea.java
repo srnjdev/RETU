@@ -24,6 +24,9 @@ public class Tarea implements Serializable {
     @Column(name = "categoria", length = 100)
     private String categoria;
 
+    @Column(name = "estado", length = 20)
+    private String estado = "pendiente";
+
     public Tarea() {
     }
 
@@ -67,5 +70,12 @@ public class Tarea implements Serializable {
     }
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
