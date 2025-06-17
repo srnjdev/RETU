@@ -105,4 +105,23 @@ public class TutoresController {
         tutorRepository.delete(tutor);
         return "redirect:/tutores";
     }
+
+    @GetMapping("/api/filtrar")
+    @org.springframework.web.bind.annotation.ResponseBody
+    public List<Tutor> filtrarTutores(
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String nombre,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String materia,
+            @org.springframework.web.bind.annotation.RequestParam(required = false) String correo) {
+        List<Tutor> tutores = tutorRepository.findAll();
+        if (nombre != null && !nombre.isEmpty()) {
+            tutores = tutores.stream().filter(t -> t.getNombre().toLowerCase().contains(nombre.toLowerCase())).toList();
+        }
+        if (materia != null && !materia.isEmpty()) {
+            tutores = tutores.stream().filter(t -> t.getMateria().toLowerCase().contains(materia.toLowerCase())).toList();
+        }
+        if (correo != null && !correo.isEmpty()) {
+            tutores = tutores.stream().filter(t -> t.getCorreo().toLowerCase().contains(correo.toLowerCase())).toList();
+        }
+        return tutores;
+    }
 }

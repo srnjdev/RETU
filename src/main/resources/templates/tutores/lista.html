@@ -62,6 +62,19 @@
                     </div>
                 </div>
 
+                <!-- Filtros dinámicos -->
+                <div class="row mb-3">
+                    <div class="col">
+                        <input type="text" id="filtroNombre" class="form-control" placeholder="Buscar por nombre">
+                    </div>
+                    <div class="col">
+                        <input type="text" id="filtroMateria" class="form-control" placeholder="Buscar por materia">
+                    </div>
+                    <div class="col">
+                        <input type="text" id="filtroCorreo" class="form-control" placeholder="Buscar por correo institucional">
+                    </div>
+                </div>
+
                 <div class="table-container">
                     <table class="table table-striped">
                         <thead>
@@ -100,6 +113,43 @@
             </div>
     </div>
     </div>
-</body>
+    <script>
+    // Función para renderizar la tabla de tutores
+    function renderTutores(tutores) {
+        const tbody = document.querySelector(".table tbody");
+        tbody.innerHTML = "";
+        tutores.forEach(tutor => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${tutor.nombre}</td>
+                <td>${tutor.correo}</td>
+                <td>${tutor.materia}</td>
+                <td>
+                    <div class='action-buttons'>
+                        <a href='/tutores/editar/${tutor.id}'><button class='btn-icon btn-edit' title='Editar'><i class='fas fa-edit'></i></button></a>
+                        <a href='/tutores/eliminar/${tutor.id}' onclick='return confirm("¿Está seguro de eliminar este tutor?");'><button class='btn-icon btn-delete' title='Eliminar'><i class='fas fa-trash'></i></button></a>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
 
+    // Función para obtener y filtrar tutores
+    function filtrarTutores() {
+        const nombre = document.getElementById('filtroNombre').value;
+        const materia = document.getElementById('filtroMateria').value;
+        const correo = document.getElementById('filtroCorreo').value;
+        const params = new URLSearchParams({ nombre, materia, correo });
+        fetch(`/tutores/api/filtrar?${params}`)
+            .then(res => res.json())
+            .then(data => renderTutores(data));
+    }
+
+    // Escuchar cambios en los filtros
+    ['filtroNombre', 'filtroMateria', 'filtroCorreo'].forEach(id => {
+        document.getElementById(id).addEventListener('input', filtrarTutores);
+    });
+</script>
+</body>
 </html>
