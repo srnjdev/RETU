@@ -107,6 +107,7 @@
                                             <th>Fecha de Entrega</th>
                                             <th>Categoría</th>
                                             <th>Estado</th>
+                                            <th>Tutor asignado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -117,6 +118,7 @@
                                             <td th:text="${tarea.fechaEntrega}">Fecha</td>
                                             <td th:text="${tarea.categoria}">Categoría</td>
                                             <td th:text="${tarea.estado}">Estado</td>
+                                            <td th:text="${tarea.tutor != null ? tarea.tutor.nombre : 'Sin asignar'}">Tutor</td>
                                             <td>
                                                 <div class="action-buttons">
                                                     <a th:href="@{'/tareas/editar/' + ${tarea.id}}">
@@ -151,6 +153,7 @@ function renderTareas(tareas) {
             <td>${tarea.fechaEntrega || ''}</td>
             <td>${tarea.categoria || ''}</td>
             <td>${tarea.estado || ''}</td>
+            <td>${tarea.tutor && tarea.tutor.nombre ? tarea.tutor.nombre : 'Sin asignar'}</td>
             <td>
                 <div class='action-buttons'>
                     <a href='/tareas/editar/${tarea.id}'><button class='btn-icon btn-edit' title='Editar'><i class='fas fa-edit'></i></button></a>
@@ -181,5 +184,4 @@ function filtrarTareas() {
 });
 </script>
 </body>
-
 </html>
