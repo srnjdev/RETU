@@ -2,6 +2,7 @@ package com.retu.retu.controller;
 
 import com.retu.retu.entity.Tarea;
 import com.retu.retu.repository.TareaRepository;
+import com.retu.retu.repository.TutorRepository;
 import com.retu.retu.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,18 +23,23 @@ public class TareasController {
     private TareaRepository tareaRepository;
 
     @Autowired
+    private TutorRepository tutorRepository;
+
+    @Autowired
     private PdfService pdfService;
 
     @GetMapping
     public String listarTareas(Model model) {
         List<Tarea> tareas = tareaRepository.findAll();
         model.addAttribute("tareas", tareas);
+        model.addAttribute("tutores", tutorRepository.findAll());
         return "tareas/lista";
     }
 
     @GetMapping("/crear")
     public String crearTareaForm(Model model) {
         model.addAttribute("tarea", new Tarea());
+        model.addAttribute("tutores", tutorRepository.findAll());
         return "tareas/crear";
     }
 
@@ -48,6 +54,7 @@ public class TareasController {
         Tarea tarea = tareaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Tarea no encontrada, ID = " + id));
         model.addAttribute("tarea", tarea);
+        model.addAttribute("tutores", tutorRepository.findAll());
         return "tareas/editar";
     }
 
@@ -66,19 +73,47 @@ public class TareasController {
         return "redirect:/tareas";
     }
 
-  @GetMapping("/pdf")
-   public ResponseEntity<byte[]> generarPdf() {
-    List<Tarea> tareas = tareaRepository.findAll();
-    byte[] pdfBytes = pdfService.generarPdfConTareas(tareas);
+    @GetMapping("/pdf")
+    public ResponseEntity<byte[]> generarPdf() {
+        List<Tarea> tareas = tareaRepository.findAll();
+        byte[] pdfBytes = pdfService.generarPdfConTareas(tareas);
 
-    if (pdfBytes == null) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        if (pdfBytes == null) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("inline", "tareas.pdf");
+
+        return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
     }
 
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_PDF);
-    headers.setContentDispositionFormData("inline", "tareas.pdf");
-
-    return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
-  }
+    @GetMapping("/api/filtrar")
+    @ResponseBody
+    public List<Tarea> filtrarTareas(
+            @RequestParam(required = false) String categoria,
+            @RequestParam(required = false) Long tutorId,
+            @RequestParam(required = false) String fechaEntrega,
+            @RequestParam(required = false) String orden) {
+        // Filtrado básico, puedes mejorar con Specification o QueryDSL si lo deseas
+        List<Tarea> tareas = tareaRepository.findAll();
+        if (categoria != null && !categoria.isEmpty()) {
+            tareas = tareas.stream().filter(t -> categoria.equals(t.getCategoria())).toList();
+        }
+        if (tutorId != null) {
+            tareas = tareas.stream().filter(t -> t.getTutor() != null && t.getTutor().getId().equals(tutorId)).toList();
+        }
+        if (fechaEntrega != null && !fechaEntrega.isEmpty()) {
+            tareas = tareas.stream().filter(t -> t.getFechaEntrega() != null && t.getFechaEntrega().toString().equals(fechaEntrega)).toList();
+        }
+        if (orden != null && !orden.isEmpty()) {
+            if (orden.equals("fechaAsc")) {
+                tareas = tareas.stream().sorted((a, b) -> a.getFechaEntrega().compareTo(b.getFechaEntrega())).toList();
+            } else if (orden.equals("fechaDesc")) {
+                tareas = tareas.stream().sorted((a, b) -> b.getFechaEntrega().compareTo(a.getFechaEntrega())).toList();
+            }
+        }
+        return tareas;
+    }
 }

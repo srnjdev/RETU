@@ -46,6 +46,14 @@
             </select>
         </div>
         
+        <!-- Tutor asignado -->
+        <div class="mb-3">
+            <label for="tutor" class="form-label">Tutor asignado</label>
+            <select class="form-control" id="tutor" th:field="*{tutor}" required>
+                <option th:each="tutor : ${tutores}" th:value="${tutor.id}" th:text="${tutor.nombre}"></option>
+            </select>
+        </div>
+        
         <!-- Botones -->
         <div class="button-group">
             <button type="submit" class="btn btn-warning">

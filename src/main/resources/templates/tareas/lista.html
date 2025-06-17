@@ -75,6 +75,29 @@
                                 </div>
                             </div>
 
+                            <!-- Filtros dinámicos -->
+                            <div class="row mb-3">
+                                <div class="col">
+                                    <input type="text" id="filtroCategoria" class="form-control" placeholder="Filtrar por categoría">
+                                </div>
+                                <div class="col">
+                                    <select id="filtroTutor" class="form-control">
+                                        <option value="">Todos los tutores</option>
+                                        <option th:each="tutor : ${tutores}" th:value="${tutor.id}" th:text="${tutor.nombre}"></option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
+                                </div>
+                                <div class="col">
+                                    <select id="filtroOrden" class="form-control">
+                                        <option value="">Ordenar por</option>
+                                        <option value="fechaAsc">Fecha ↑</option>
+                                        <option value="fechaDesc">Fecha ↓</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="table-container">
                                 <table class="table table-striped">
                                     <thead>
@@ -115,6 +138,48 @@
                         </div>
                  
 
+<script>
+// Función para renderizar la tabla de tareas
+function renderTareas(tareas) {
+    const tbody = document.querySelector(".table tbody");
+    tbody.innerHTML = "";
+    tareas.forEach(tarea => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${tarea.titulo}</td>
+            <td>${tarea.descripcion}</td>
+            <td>${tarea.fechaEntrega || ''}</td>
+            <td>${tarea.categoria || ''}</td>
+            <td>${tarea.estado || ''}</td>
+            <td>
+                <div class='action-buttons'>
+                    <a href='/tareas/editar/${tarea.id}'><button class='btn-icon btn-edit' title='Editar'><i class='fas fa-edit'></i></button></a>
+                    <a href='/tareas/eliminar/${tarea.id}' onclick='return confirm("¿Está seguro de eliminar esta tarea?");'><button class='btn-icon btn-delete' title='Eliminar'><i class='fas fa-trash'></i></button></a>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+// Función para obtener y filtrar tareas
+function filtrarTareas() {
+    const categoria = document.getElementById('filtroCategoria').value;
+    const tutorId = document.getElementById('filtroTutor').value;
+    const fechaEntrega = document.getElementById('filtroFecha').value;
+    const orden = document.getElementById('filtroOrden').value;
+    const params = new URLSearchParams({ categoria, tutorId, fechaEntrega, orden });
+    fetch(`/tareas/api/filtrar?${params}`)
+        .then(res => res.json())
+        .then(data => renderTareas(data));
+}
+
+// Escuchar cambios en los filtros
+['filtroCategoria', 'filtroTutor', 'filtroFecha', 'filtroOrden'].forEach(id => {
+    document.getElementById(id).addEventListener('change', filtrarTareas);
+    document.getElementById(id).addEventListener('keyup', filtrarTareas);
+});
+</script>
 </body>
 
 </html>

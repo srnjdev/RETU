@@ -27,6 +27,10 @@ public class Tarea implements Serializable {
     @Column(name = "estado", length = 20)
     private String estado = "pendiente";
 
+    @ManyToOne
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
+
     public Tarea() {
     }
 
@@ -77,5 +81,12 @@ public class Tarea implements Serializable {
     }
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
     }
 }
