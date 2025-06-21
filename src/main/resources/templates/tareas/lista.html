@@ -11,143 +11,157 @@
 </head>
 
 <body>
- 
-            <!---ASIDE NUEVO Responsive-->
-            <!-- Mobile Menu Toggle -->
-            <div class="menu-toggle" id="mobileMenuToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
 
-            <!-- Sidebar Menu   -->
-            <div class="sidebar" id="sidebar">
-                <div class="sidebar-header">
-                    <h2>RETU</h2>
-                </div>
-                <ul class="sidebar-menu">
-                    <li><a th:href="@{/home}"><i class="fas fa-home-alt"></i> Inicio</a></li>
-                    <li><a th:href="@{/tareas}" class="active"><i class="fas fa-pencil"></i> Tareas</a></li>
-                    <li><a th:href="@{/tutores}"><i class="fas fa-users"></i> Tutores</a></li>
-                </ul>
-            </div>
+    <!---ASIDE NUEVO Responsive-->
+    <!-- Mobile Menu Toggle -->
+    <div class="menu-toggle" id="mobileMenuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- Sidebar Menu   -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>RETU</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a th:href="@{/home}"><i class="fas fa-home-alt"></i> Inicio</a></li>
+            <li><a th:href="@{/tareas}" class="active"><i class="fas fa-pencil"></i> Tareas</a></li>
+            <li><a th:href="@{/tutores}"><i class="fas fa-users"></i> Tutores</a></li>
+        </ul>
+    </div>
 
 
-            <div class="main-content">
+    <div class="main-content">
 
-                <header class="retu-superior">
-                    <div class="contenedor-cabecera">
-                        <h1 class="titulo-principal">Dashboard</h1>
+        <header class="retu-superior">
+            <div class="contenedor-cabecera">
+                <h1 class="titulo-principal">Dashboard</h1>
 
-                        <div class="perfil-usuario">
-                            <div class="info-personal">
-                                <img src="/imagenes/perfil.png" alt="Foto del Tutor" class="foto-tutor">
-                                <span class="nombre-usuario" id="nombre-tutor">Nombre Tutor</span>
-                            </div>
-                            <button class="boton-salir">
-                                <img src="/imagenes/cerrar-sesion.png" alt="Cerrar sesión" class="icono-salir">
-                            </button>
-                        </div>
+                <div class="perfil-usuario">
+                    <div class="info-personal">
+                        <img src="/imagenes/perfil.png" alt="Foto del Tutor" class="foto-tutor">
+                        <span class="nombre-usuario" id="nombre-tutor">Nombre Tutor</span>
                     </div>
-                </header>
+                    <button class="boton-salir">
+                        <img src="/imagenes/cerrar-sesion.png" alt="Cerrar sesión" class="icono-salir">
+                    </button>
+                </div>
+            </div>
+        </header>
 
 
 
 
 
-                        <div class="container">
+        <div class="container">
 
 
-                            <!-- Sección de Tareas -->
-                            <div class="section-title" style="margin-top: 40px;">
-                                <h2>Lista de Tareas</h2>
-                                <div class="section-actions">
-                                    <a th:href="@{/tareas/crear}">
-                                        <button class="btn btn-primary">
-                                            <i class="fas fa-plus"></i> Crear Tarea
+            <!-- Sección de Tareas -->
+            <div class="section-title" style="margin-top: 40px;">
+                <h2>Lista de Tareas</h2>
+                <div class="section-actions">
+                    <a th:href="@{/tareas/crear}">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Crear Tarea
+                        </button>
+                    </a>
+                    <a th:href="@{/tareas/pdf}">
+                        <button class="btn btn-pdf">
+                            <i class="fas fa-file-pdf"></i> Generar PDF
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filtros dinámicos para tareas -->
+            <div class="filtros-card filtros-row mb-3">
+                <div class="filtro-item">
+                    <span class="input-group-text">
+                        <i class="fas fa-folder"></i>
+                    </span>
+                    <input type="text" id="filtroCategoria" class="form-control" placeholder="Filtrar por categoría">
+                </div>
+                <div class="filtro-item">
+                    <span class="input-group-text">
+                        <i class="fas fa-user-tie"></i>
+                    </span>
+                    <select id="filtroTutor" class="form-control">
+                        <option value="">Todos los tutores</option>
+                        <option th:each="tutor : ${tutores}" th:value="${tutor.id}" th:text="${tutor.nombre}"></option>
+                    </select>
+                </div>
+                <div class="filtro-item">
+                    <span class="input-group-text">
+                        <i class="fas fa-calendar-alt"></i>
+                    </span>
+                    <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
+                </div>
+                <div class="filtro-item">
+                    <span class="input-group-text">
+                        <i class="fas fa-sort"></i>
+                    </span>
+                    <select id="filtroOrden" class="form-control">
+                        <option value="">Ordenar por</option>
+                        <option value="fechaAsc">Fecha ↑</option>
+                        <option value="fechaDesc">Fecha ↓</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Título</th>
+                            <th>Descripción</th>
+                            <th>Fecha de Entrega</th>
+                            <th>Categoría</th>
+                            <th>Estado</th>
+                            <th>Tutor asignado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="tarea : ${tareas}">
+                            <td th:text="${tarea.titulo}">Título</td>
+                            <td th:text="${tarea.descripcion}">Descripción</td>
+                            <td th:text="${tarea.fechaEntrega}">Fecha</td>
+                            <td th:text="${tarea.categoria}">Categoría</td>
+                            <td th:text="${tarea.estado}">Estado</td>
+                            <td th:text="${tarea.tutor != null ? tarea.tutor.nombre : 'Sin asignar'}">Tutor</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a th:href="@{'/tareas/editar/' + ${tarea.id}}">
+                                        <button class="btn-icon btn-edit" title="Editar">
+                                            <i class="fas fa-edit"></i>
                                         </button>
                                     </a>
-                                    <a th:href="@{/tareas/pdf}">
-                                        <button class="btn btn-pdf">
-                                            <i class="fas fa-file-pdf"></i> Generar PDF
+                                    <a th:href="@{'/tareas/eliminar/' + ${tarea.id}}"
+                                        onclick="return confirm('¿Está seguro de eliminar esta tarea?');">
+                                        <button class="btn-icon btn-delete" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
                                         </button>
                                     </a>
                                 </div>
-                            </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                            <!-- Filtros dinámicos -->
-                            <div class="row mb-3">
-                                <div class="col">
-                                    <input type="text" id="filtroCategoria" class="form-control" placeholder="Filtrar por categoría">
-                                </div>
-                                <div class="col">
-                                    <select id="filtroTutor" class="form-control">
-                                        <option value="">Todos los tutores</option>
-                                        <option th:each="tutor : ${tutores}" th:value="${tutor.id}" th:text="${tutor.nombre}"></option>
-                                    </select>
-                                </div>
-                                <div class="col">
-                                    <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
-                                </div>
-                                <div class="col">
-                                    <select id="filtroOrden" class="form-control">
-                                        <option value="">Ordenar por</option>
-                                        <option value="fechaAsc">Fecha ↑</option>
-                                        <option value="fechaDesc">Fecha ↓</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="table-container">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Título</th>
-                                            <th>Descripción</th>
-                                            <th>Fecha de Entrega</th>
-                                            <th>Categoría</th>
-                                            <th>Estado</th>
-                                            <th>Tutor asignado</th>
-                                            <th>Acciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="tarea : ${tareas}">
-                                            <td th:text="${tarea.titulo}">Título</td>
-                                            <td th:text="${tarea.descripcion}">Descripción</td>
-                                            <td th:text="${tarea.fechaEntrega}">Fecha</td>
-                                            <td th:text="${tarea.categoria}">Categoría</td>
-                                            <td th:text="${tarea.estado}">Estado</td>
-                                            <td th:text="${tarea.tutor != null ? tarea.tutor.nombre : 'Sin asignar'}">Tutor</td>
-                                            <td>
-                                                <div class="action-buttons">
-                                                    <a th:href="@{'/tareas/editar/' + ${tarea.id}}">
-                                                        <button class="btn-icon btn-edit" title="Editar">
-                                                            <i class="fas fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    <a th:href="@{'/tareas/eliminar/' + ${tarea.id}}" onclick="return confirm('¿Está seguro de eliminar esta tarea?');">
-                                                        <button class="btn-icon btn-delete" title="Eliminar">
-                                                            <i class="fas fa-trash"></i>
-                                                        </button>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                 
-
-<script>
-// Función para renderizar la tabla de tareas
-function renderTareas(tareas) {
-    const tbody = document.querySelector(".table tbody");
-    tbody.innerHTML = "";
-    tareas.forEach(tarea => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
+        <script>
+            // Función para renderizar la tabla de tareas
+            function renderTareas(tareas) {
+                const tbody = document.querySelector(".table tbody");
+                tbody.innerHTML = "";
+                tareas.forEach(tarea => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
             <td>${tarea.titulo}</td>
             <td>${tarea.descripcion}</td>
             <td>${tarea.fechaEntrega || ''}</td>
@@ -161,27 +175,28 @@ function renderTareas(tareas) {
                 </div>
             </td>
         `;
-        tbody.appendChild(row);
-    });
-}
+                    tbody.appendChild(row);
+                });
+            }
 
-// Función para obtener y filtrar tareas
-function filtrarTareas() {
-    const categoria = document.getElementById('filtroCategoria').value;
-    const tutorId = document.getElementById('filtroTutor').value;
-    const fechaEntrega = document.getElementById('filtroFecha').value;
-    const orden = document.getElementById('filtroOrden').value;
-    const params = new URLSearchParams({ categoria, tutorId, fechaEntrega, orden });
-    fetch(`/tareas/api/filtrar?${params}`)
-        .then(res => res.json())
-        .then(data => renderTareas(data));
-}
+            // Función para obtener y filtrar tareas
+            function filtrarTareas() {
+                const categoria = document.getElementById('filtroCategoria').value;
+                const tutorId = document.getElementById('filtroTutor').value;
+                const fechaEntrega = document.getElementById('filtroFecha').value;
+                const orden = document.getElementById('filtroOrden').value;
+                const params = new URLSearchParams({ categoria, tutorId, fechaEntrega, orden });
+                fetch(`/tareas/api/filtrar?${params}`)
+                    .then(res => res.json())
+                    .then(data => renderTareas(data));
+            }
 
-// Escuchar cambios en los filtros
-['filtroCategoria', 'filtroTutor', 'filtroFecha', 'filtroOrden'].forEach(id => {
-    document.getElementById(id).addEventListener('change', filtrarTareas);
-    document.getElementById(id).addEventListener('keyup', filtrarTareas);
-});
-</script>
+            // Escuchar cambios en los filtros
+            ['filtroCategoria', 'filtroTutor', 'filtroFecha', 'filtroOrden'].forEach(id => {
+                document.getElementById(id).addEventListener('change', filtrarTareas);
+                document.getElementById(id).addEventListener('keyup', filtrarTareas);
+            });
+        </script>
 </body>
+
 </html>
