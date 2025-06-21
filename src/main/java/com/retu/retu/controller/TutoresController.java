@@ -1,8 +1,13 @@
 package com.retu.retu.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +20,9 @@ import com.retu.retu.entity.Rol;
 import com.retu.retu.entity.Tutor;
 import com.retu.retu.repository.RolRepository;
 import com.retu.retu.repository.TutorRepository;
+import com.retu.retu.service.ExportarTutoresService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/tutores")
@@ -22,6 +30,9 @@ public class TutoresController {
 
     @Autowired
     private TutorRepository tutorRepository;
+
+    @Autowired
+    private ExportarTutoresService exportarTutoresService;
 
     @Autowired
     private RolRepository rolRepository;
@@ -124,4 +135,29 @@ public class TutoresController {
         }
         return tutores;
     }
+
+    @GetMapping("/exportar/excel")
+    public void exportarTutoresExcel(HttpServletResponse response) throws IOException {
+        response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        response.setHeader("Content-Disposition", "attachment; filename=tutores.xlsx");
+
+        List<Tutor> tutores = tutorRepository.findAll();
+        exportarTutoresService.exportarExcel(tutores, response);
+    }
+
+    @GetMapping("/exportar/pdf")
+public ResponseEntity<byte[]> exportarTutoresPdf() {
+    List<Tutor> tutores = tutorRepository.findAll();
+    byte[] pdfBytes = exportarTutoresService.generarPdfConTutores(tutores);
+
+    if (pdfBytes == null) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+    }
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+    headers.setContentDispositionFormData("inline", "tutores.pdf");
+
+    return new ResponseEntity<>(pdfBytes, headers, HttpStatus.OK);
+}
 }

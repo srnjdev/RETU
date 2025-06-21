@@ -25,16 +25,16 @@
             <h2>RETU</h2>
         </div>
         <ul class="sidebar-menu">
-            <li><a th:href="@{/home}" ><i class="fas fa-home-alt"></i> Inicio</a></li>
+            <li><a th:href="@{/home}"><i class="fas fa-home-alt"></i> Inicio</a></li>
             <li><a th:href="@{/tareas}"><i class="fas fa-pencil"></i> Tareas</a></li>
             <li><a th:href="@{/tutores}" class="active"><i class="fas fa-users"></i> Tutores</a></li>
         </ul>
     </div>
 
 
-        <div class="main-content">
+    <div class="main-content">
 
- <header class="retu-superior">
+        <header class="retu-superior">
             <div class="contenedor-cabecera">
                 <h1 class="titulo-principal">Dashboard</h1>
 
@@ -51,47 +51,60 @@
         </header>
 
 
-            <div class="container">
-                <!-- Sección de Tutores -->
-                <div class="section-title">
-                    <h2>Lista de Tutores</h2>
-                    <div class="section-actions"><a th:href="@{/tutores/crear}">
-                            <button class="btn btn-primary">
-                                <i class="fas fa-plus"></i>Nuevo Tutor
-                            </button></a>
-                    </div>
+        <div class="container">
+            <!-- Sección de Tutores -->
+            <div class="section-title">
+                <h2>Lista de Tutores</h2>
+                <div class="section-actions">
+                    <a th:href="@{/tutores/exportar/excel}">
+                        <button class="btn btn-success">
+                            <i class="fas fa-file-excel"></i> Exportar Excel
+                        </button>
+                    </a>
+                    <a th:href="@{/tutores/exportar/pdf}">
+                        <button class="btn btn-danger">
+                            <i class="fas fa-file-pdf"></i> Exportar PDF
+                        </button>
+                    </a>
+                    <a th:href="@{/tutores/crear}">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i>Nuevo Tutor
+                        </button>
+                    </a>
                 </div>
+            </div>
 
-                <!-- Filtros dinámicos -->
-                <div class="row mb-3">
-                    <div class="col">
-                        <input type="text" id="filtroNombre" class="form-control" placeholder="Buscar por nombre">
-                    </div>
-                    <div class="col">
-                        <input type="text" id="filtroMateria" class="form-control" placeholder="Buscar por materia">
-                    </div>
-                    <div class="col">
-                        <input type="text" id="filtroCorreo" class="form-control" placeholder="Buscar por correo institucional">
-                    </div>
+            <!-- Filtros dinámicos -->
+            <div class="row mb-3">
+                <div class="col">
+                    <input type="text" id="filtroNombre" class="form-control" placeholder="Buscar por nombre">
                 </div>
+                <div class="col">
+                    <input type="text" id="filtroMateria" class="form-control" placeholder="Buscar por materia">
+                </div>
+                <div class="col">
+                    <input type="text" id="filtroCorreo" class="form-control"
+                        placeholder="Buscar por correo institucional">
+                </div>
+            </div>
 
-                <div class="table-container">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Correo</th>
-                                <th>Materia</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="tutor : ${tutores}">
-                                <td th:text="${tutor.nombre}">Nombre</td>
-                                <td th:text="${tutor.correo}">Correo</td>
-                                <td th:text="${tutor.materia}">Materia</td>
-                                <td>
-                                    <div class="action-buttons">
+            <div class="table-container">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Materia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="tutor : ${tutores}">
+                            <td th:text="${tutor.nombre}">Nombre</td>
+                            <td th:text="${tutor.correo}">Correo</td>
+                            <td th:text="${tutor.materia}">Materia</td>
+                            <td>
+                                <div class="action-buttons">
                                     <!-- Botón para editar -->
                                     <a th:href="@{'/tutores/editar/' + ${tutor.id}}">
                                         <button class="btn-icon btn-edit" title="Editar">
@@ -104,23 +117,23 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
     </div>
     </div>
     <script>
-    // Función para renderizar la tabla de tutores
-    function renderTutores(tutores) {
-        const tbody = document.querySelector(".table tbody");
-        tbody.innerHTML = "";
-        tutores.forEach(tutor => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
+        // Función para renderizar la tabla de tutores
+        function renderTutores(tutores) {
+            const tbody = document.querySelector(".table tbody");
+            tbody.innerHTML = "";
+            tutores.forEach(tutor => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
                 <td>${tutor.nombre}</td>
                 <td>${tutor.correo}</td>
                 <td>${tutor.materia}</td>
@@ -131,25 +144,26 @@
                     </div>
                 </td>
             `;
-            tbody.appendChild(row);
+                tbody.appendChild(row);
+            });
+        }
+
+        // Función para obtener y filtrar tutores
+        function filtrarTutores() {
+            const nombre = document.getElementById('filtroNombre').value;
+            const materia = document.getElementById('filtroMateria').value;
+            const correo = document.getElementById('filtroCorreo').value;
+            const params = new URLSearchParams({ nombre, materia, correo });
+            fetch(`/tutores/api/filtrar?${params}`)
+                .then(res => res.json())
+                .then(data => renderTutores(data));
+        }
+
+        // Escuchar cambios en los filtros
+        ['filtroNombre', 'filtroMateria', 'filtroCorreo'].forEach(id => {
+            document.getElementById(id).addEventListener('input', filtrarTutores);
         });
-    }
-
-    // Función para obtener y filtrar tutores
-    function filtrarTutores() {
-        const nombre = document.getElementById('filtroNombre').value;
-        const materia = document.getElementById('filtroMateria').value;
-        const correo = document.getElementById('filtroCorreo').value;
-        const params = new URLSearchParams({ nombre, materia, correo });
-        fetch(`/tutores/api/filtrar?${params}`)
-            .then(res => res.json())
-            .then(data => renderTutores(data));
-    }
-
-    // Escuchar cambios en los filtros
-    ['filtroNombre', 'filtroMateria', 'filtroCorreo'].forEach(id => {
-        document.getElementById(id).addEventListener('input', filtrarTutores);
-    });
-</script>
+    </script>
 </body>
+
 </html>
