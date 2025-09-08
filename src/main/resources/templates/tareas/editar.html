@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Editar Tarea</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/form_editar.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<div class="container mt-4">
+<div class="container">
     <h1>Editar Tarea</h1>
-    
     <form th:action="@{/tareas/actualizar/{id}(id=${tarea.id})}" 
           th:object="${tarea}"
           method="post">
@@ -36,11 +36,16 @@
             <input type="text" class="form-control" id="categoria" th:field="*{categoria}" />
         </div>
         
-        <!-- Botón para guardar cambios -->
-        <button type="submit" class="btn btn-primary">Actualizar</button>
-        
-        <!-- Enlace para volver a la lista -->
-        <a th:href="@{/tareas}" class="btn btn-secondary">Cancelar</a>
+        <!-- Botones -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-warning">
+                <i class="fas fa-sync-alt"></i> Actualizar
+            </button>
+            
+            <a th:href="@{/tareas}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancelar
+            </a>
+        </div>
     </form>
 </div>
 </body>

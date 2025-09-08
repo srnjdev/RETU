@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Crear Tarea</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/form_crear.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-<div class="container mt-4">
+<div class="container">
     <h1>Crear Nueva Tarea</h1>
     
     <form th:action="@{/tareas}" th:object="${tarea}" method="post">
@@ -34,11 +35,16 @@
             <input type="text" class="form-control" id="categoria" th:field="*{categoria}" />
         </div>
         
-        <!-- Botón para guardar -->
-        <button type="submit" class="btn btn-primary">Guardar</button>
-        
-        <!-- Enlace para volver a la lista -->
-        <a th:href="@{/tareas}" class="btn btn-secondary">Volver</a>
+        <!-- Botones -->
+        <div class="button-group">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Guardar
+            </button>
+            
+            <a th:href="@{/tareas}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver
+            </a>
+        </div>
     </form>
 </div>
 </body>
